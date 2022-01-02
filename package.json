@@ -1,0 +1,26 @@
+{
+  "name": "glitchgram-server",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "nodemon -r esm index.js",
+    "lint": "eslint --quiet src --ext .js,.json"
+  },
+  "author": "iamraviprakash",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-core": "^3.6.1",
+    "apollo-server-express": "^3.6.1",
+    "esm": "^3.2.25",
+    "express": "^4.17.2",
+    "graphql": "^16.2.0",
+    "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "eslint": "^8.6.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-node": "^11.1.0",
+    "prettier": "2.5.1"
+  }
+}
