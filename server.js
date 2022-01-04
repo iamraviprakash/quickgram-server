@@ -5,6 +5,7 @@ import {
 } from 'apollo-server-core';
 import express from 'express';
 import http from 'http';
+import dataSourceClient from './model';
 
 export default async function startApolloServer(typeDefs, resolvers) {
   // Integrating with Express app
@@ -15,6 +16,10 @@ export default async function startApolloServer(typeDefs, resolvers) {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    context: async ({ req }) => ({
+      auth: 'handle authorization',
+      db: dataSourceClient,
+    }),
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
       ApolloServerPluginLandingPageGraphQLPlayground({
@@ -38,7 +43,7 @@ export default async function startApolloServer(typeDefs, resolvers) {
 
   server.applyMiddleware({ app, path: '/graphql' });
 
-  await new Promise(resolve =>
+  await new Promise((resolve) =>
     httpServer.listen({ port: 8056 }, resolve),
   );
 
