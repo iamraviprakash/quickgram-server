@@ -9,6 +9,7 @@
   "author": "iamraviprakash",
   "license": "ISC",
   "dependencies": {
+    "@graphql-tools/load-files": "^6.5.3",
     "apollo-server-core": "^3.6.1",
     "apollo-server-express": "^3.6.1",
     "datasource-sql": "^1.6.0",
@@ -16,6 +17,7 @@
     "esm": "^3.2.25",
     "express": "^4.17.2",
     "graphql": "^16.2.0",
+    "graphql-tools": "^8.2.0",
     "knex": "^0.95.15",
     "nodemon": "^2.0.15",
     "pg": "^8.7.1"
