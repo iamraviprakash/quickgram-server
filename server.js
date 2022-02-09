@@ -16,6 +16,7 @@ export default async function startApolloServer(typeDefs, resolvers) {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: true,
     context: async ({ req }) => ({
       auth: 'handle authorization',
       db: dataSourceClient,
