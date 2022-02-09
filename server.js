@@ -44,10 +44,10 @@ export default async function startApolloServer(typeDefs, resolvers) {
   server.applyMiddleware({ app, path: '/graphql' });
 
   await new Promise((resolve) =>
-    httpServer.listen({ port: 8056 }, resolve),
+    httpServer.listen({ port: process.env.SERVER_PORT }, resolve),
   );
 
   console.log(
-    `🚀 Server ready at http://localhost:8056${server.graphqlPath}`,
+    `🚀 Server ready at http://localhost:${process.env.SERVER_PORT}${server.graphqlPath}`,
   );
 }
