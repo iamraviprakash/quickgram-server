@@ -1,5 +1,10 @@
 const resolvers = {
   Query: {
+    chatQuery: async (parent, args, context) => {
+      return [];
+    },
+  },
+  ChatQuery: {
     chats: async (parent, args, context, info) => {
       const result = await context.db
         .select('*')

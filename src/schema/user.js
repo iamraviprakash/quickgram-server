@@ -11,8 +11,12 @@ const typeDefs = gql`
     chats: [Chat!]
   }
 
+  type UserQuery {
+    user: User!
+  }
+
   type Query {
-    users: [User]!
+    userQuery: UserQuery!
   }
 `;
 

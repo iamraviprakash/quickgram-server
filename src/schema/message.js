@@ -14,8 +14,12 @@ const typeDefs = gql`
     createdAt: String!
   }
 
-  type Query {
+  type MessageQuery {
     messages: [Message]!
+  }
+
+  type Query {
+    messageQuery: MessageQuery
   }
 `;
 

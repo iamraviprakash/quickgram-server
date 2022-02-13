@@ -11,13 +11,17 @@ const typeDefs = gql`
     name: String!
     users: [User]!
     messages: [Message!]
-    type: CHAT_TYPE
+    type: CHAT_TYPE!
     createdBy: User!
     createdAt: String!
   }
 
-  type Query {
+  type ChatQuery {
     chats: [Chat]!
+  }
+
+  type Query {
+    chatQuery: ChatQuery!
   }
 `;
 

@@ -1,6 +1,11 @@
 const resolvers = {
   Query: {
-    users: async (parent, args, context, info) => {
+    userQuery: async (parent, args, context) => {
+      return [];
+    },
+  },
+  UserQuery: {
+    user: async (parent, args, context, info) => {
       const result = await context.db
         .select('*')
         .from('user')

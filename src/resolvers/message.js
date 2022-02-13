@@ -1,5 +1,10 @@
 const resolvers = {
   Query: {
+    messageQuery: async (parent, args, context) => {
+      return [];
+    },
+  },
+  MessageQuery: {
     messages: async (parent, args, context, info) => {
       const result = await context.db
         .select('*')
