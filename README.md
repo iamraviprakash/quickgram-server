@@ -1,0 +1,2 @@
+# glitchgram-server
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9c372cfb97ff4a63b9c6a019097cc0f1)](https://app.codacy.com/gh/iamraviprakash/glitchgram-server?utm_source=github.com&utm_medium=referral&utm_content=iamraviprakash/glitchgram-server&utm_campaign=Badge_Grade_Settings)
