@@ -18,6 +18,21 @@ const typeDefs = gql`
   type Query {
     userQuery: UserQuery!
   }
+
+  type UserMutation {
+    updateUser(
+      id: ID!
+      firstName: String!
+      lastName: String!
+      emailId: String
+      mobileNumber: String!
+    ): User!
+    deleteUser(id: ID!): User!
+  }
+
+  type Mutation {
+    userMutation: UserMutation!
+  }
 `;
 
 export default typeDefs;

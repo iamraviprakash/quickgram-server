@@ -8,6 +8,19 @@ const typeDefs = gql`
   type Query {
     rootQuery: RootQuery!
   }
+
+  type RootMutation {
+    createUser(
+      firstName: String!
+      lastName: String!
+      emailId: String
+      mobileNumber: String!
+    ): User!
+  }
+
+  type Mutation {
+    rootMutation: RootMutation!
+  }
 `;
 
 export default typeDefs;

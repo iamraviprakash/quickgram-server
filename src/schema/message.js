@@ -21,6 +21,15 @@ const typeDefs = gql`
   type Query {
     messageQuery: MessageQuery
   }
+
+  type MessageMutation {
+    updateMessage(id: ID!, content: String!): Message!
+    deleteMessage(id: ID!): Message!
+  }
+
+  type Mutation {
+    messageMutation: MessageMutation!
+  }
 `;
 
 export default typeDefs;
