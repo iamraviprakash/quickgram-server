@@ -9,13 +9,16 @@ const typeDefs = gql`
     rootQuery: RootQuery!
   }
 
+  input CreateUserInput {
+    firstName: String!
+    lastName: String
+    emailId: String!
+    password: String!
+    mobileNumber: String!
+  }
+
   type RootMutation {
-    createUser(
-      firstName: String!
-      lastName: String!
-      emailId: String
-      mobileNumber: String!
-    ): User!
+    createUser(input: CreateUserInput!): User!
   }
 
   type Mutation {
