@@ -19,14 +19,16 @@ const typeDefs = gql`
     userQuery: UserQuery!
   }
 
+  input UpdateUserInput {
+    firstName: String
+    lastName: String
+    emailId: String
+    mobileNumber: String
+    password: String
+  }
+
   type UserMutation {
-    updateUser(
-      id: ID!
-      firstName: String!
-      lastName: String!
-      emailId: String
-      mobileNumber: String!
-    ): User!
+    updateUser(id: ID!, input: UpdateUserInput!): User!
     deleteUser(id: ID!): User!
   }
 
