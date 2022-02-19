@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const resolvers = {
   Query: {
     chatQuery: async (parent, args, context) => {
@@ -5,12 +7,13 @@ const resolvers = {
     },
   },
   ChatQuery: {
-    chats: async (parent, args, context, info) => {
+    chat: async (parent, args, context, info) => {
       const result = await context.db
         .select('*')
         .from('chat')
         .where('created_by', '3');
-      return result;
+
+      return _.first(result);
     },
   },
   Chat: {
@@ -43,7 +46,8 @@ const resolvers = {
         .select('*')
         .from('user')
         .where('id', parent.created_by);
-      return result;
+
+      return _.first(result);
     },
     createdAt: async (parent, args, context, info) => {
       return parent.created_at;

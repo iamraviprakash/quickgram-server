@@ -12,7 +12,7 @@ const resolvers = {
         .select('*')
         .from('user')
         .where('id', '3');
-      return result;
+      return _.first(result);
     },
   },
   User: {
