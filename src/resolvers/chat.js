@@ -7,13 +7,10 @@ const resolvers = {
     },
   },
   ChatQuery: {
-    chat: async (parent, args, context, info) => {
-      const result = await context.db
-        .select('*')
-        .from('chat')
-        .where('created_by', '3');
+    chats: async (parent, args, context, info) => {
+      const result = await context.db.select('*').from('chat');
 
-      return _.first(result);
+      return result;
     },
   },
   Chat: {

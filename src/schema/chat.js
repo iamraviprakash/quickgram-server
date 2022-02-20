@@ -17,7 +17,7 @@ const typeDefs = gql`
   }
 
   type ChatQuery {
-    chat: Chat!
+    chats: [Chat!]
   }
 
   type Query {
