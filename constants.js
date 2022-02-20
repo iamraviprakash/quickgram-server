@@ -1,1 +1,2 @@
 export const MAXIMUM_QUERY_DEPTH = 10;
+export const MAXIMUM_GRAPHQL_REQUEST_COST = 1000;
