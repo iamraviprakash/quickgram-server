@@ -6,6 +6,8 @@ import {
 import express from 'express';
 import http from 'http';
 import dataSourceClient from './model';
+import depthLimit from 'graphql-depth-limit';
+import { MAXIMUM_QUERY_DEPTH } from './constants';
 
 export default async function startApolloServer(typeDefs, resolvers) {
   // Integrating with Express app
@@ -17,6 +19,7 @@ export default async function startApolloServer(typeDefs, resolvers) {
     typeDefs,
     resolvers,
     introspection: true,
+    validationRules: [depthLimit(MAXIMUM_QUERY_DEPTH)],
     context: async ({ req }) => ({
       auth: 'handle authorization',
       db: dataSourceClient,
