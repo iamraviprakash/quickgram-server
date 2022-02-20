@@ -9,7 +9,9 @@ import dataSourceClient from './model';
 import depthLimit from 'graphql-depth-limit';
 import costAnalysis from 'graphql-cost-analysis';
 import {
+  SERVER_TIMEOUT,
   MAXIMUM_QUERY_DEPTH,
+  MAXIMUM_SERVER_CONNECTIONS,
   MAXIMUM_GRAPHQL_REQUEST_COST,
 } from './constants';
 
@@ -17,6 +19,10 @@ export default async function startApolloServer(typeDefs, resolvers) {
   // Integrating with Express app
   const app = new express();
   const httpServer = http.createServer(app);
+
+  // HTTP server configuration
+  httpServer.timeout = SERVER_TIMEOUT;
+  httpServer.maxConnections = MAXIMUM_SERVER_CONNECTIONS;
 
   // Apollo Server initialization
   const server = new ApolloServer({
