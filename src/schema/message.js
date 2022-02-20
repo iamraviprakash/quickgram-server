@@ -15,7 +15,7 @@ const typeDefs = gql`
   }
 
   type MessageQuery {
-    message: Message!
+    messages: [Message!]
   }
 
   type Query {

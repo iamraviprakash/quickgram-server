@@ -7,13 +7,10 @@ const resolvers = {
     },
   },
   MessageQuery: {
-    message: async (parent, args, context, info) => {
-      const result = await context.db
-        .select('*')
-        .from('message')
-        .where('created_by', '3');
+    messages: async (parent, args, context, info) => {
+      const result = await context.db.select('*').from('message');
 
-      return _.first(result);
+      return result;
     },
   },
   Message: {
