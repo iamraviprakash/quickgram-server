@@ -7,12 +7,10 @@ const resolvers = {
     },
   },
   UserQuery: {
-    user: async (parent, args, context, info) => {
-      const result = await context.db
-        .select('*')
-        .from('user')
-        .where('id', '3');
-      return _.first(result);
+    users: async (parent, args, context, info) => {
+      const result = await context.db.select('*').from('user');
+
+      return result;
     },
   },
   User: {
@@ -49,6 +47,17 @@ const resolvers = {
     },
   },
   UserMutation: {
+    createUser: async (parent, args, context, info) => {
+      const result = await context.db('user').returning('*').insert({
+        first_name: args.firstName,
+        last_name: args.lastName,
+        email_id: args.emailId,
+        password: args.password,
+        mobile_number: args.mobileNumber,
+      });
+
+      return _.first(result);
+    },
     updateUser: async (parent, args, context, info) => {
       const result = await context
         .db('user')
