@@ -24,16 +24,31 @@ const typeDefs = gql`
     chatQuery: ChatQuery!
   }
 
+  input CreateChatInput {
+    name: String!
+    type: CHAT_TYPE!
+    users: [ID]!
+    createdBy: ID!
+  }
+
+  input UpdateChatInput {
+    name: String
+    usersToAdd: [ID!]
+    usersToRemove: [ID!]
+  }
+
+  input CreateMessageInput {
+    chatId: ID!
+    content: String!
+    createdBy: ID!
+    contentType: CONTENT_TYPE!
+  }
+
   type ChatMutation {
-    createChat(name: String!, type: CHAT_TYPE, users: [ID!]): Chat!
-    updateChat(id: ID!, name: String!): Chat!
-    deleteChat(id: [ID!]): [Chat!]
-    addUser(userId: [ID!]): Chat!
-    createMessage(
-      chatId: ID!
-      content: String!
-      contentType: CONTENT_TYPE!
-    ): Message!
+    createChat(input: CreateChatInput!): Chat!
+    updateChat(id: ID!, input: UpdateChatInput!): Chat!
+    deleteChat(id: ID!): Chat!
+    createMessage(input: CreateMessageInput!): Message!
   }
 
   type Mutation {
