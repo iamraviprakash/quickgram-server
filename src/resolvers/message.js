@@ -38,6 +38,33 @@ const resolvers = {
       return parent.created_at;
     },
   },
+  Mutation: {
+    messageMutation: async (parent, args, context, info) => {
+      return {};
+    },
+  },
+  MessageMutation: {
+    updateMessage: async (parent, args, context, info) => {
+      const result = await context
+        .db('message')
+        .returning('*')
+        .update({
+          content: args.input.content,
+        })
+        .where('id', args.id);
+
+      return _.first(result);
+    },
+    deleteMessage: async (parent, args, context, info) => {
+      const result = await context
+        .db('message')
+        .returning('*')
+        .update({ is_active: false })
+        .where('id', args.id);
+
+      return _.first(result);
+    },
+  },
 };
 
 export default resolvers;

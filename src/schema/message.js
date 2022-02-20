@@ -22,8 +22,12 @@ const typeDefs = gql`
     messageQuery: MessageQuery
   }
 
+  input UpdateMessageInput {
+    content: String
+  }
+
   type MessageMutation {
-    updateMessage(id: ID!, content: String!): Message!
+    updateMessage(id: ID!, input: UpdateMessageInput!): Message!
     deleteMessage(id: ID!): Message!
   }
 
