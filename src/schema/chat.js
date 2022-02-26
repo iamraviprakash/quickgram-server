@@ -16,8 +16,13 @@ const typeDefs = gql`
     createdAt: String!
   }
 
+  input ChatFilterInput {
+    ids: [ID!]
+    types: [CHAT_TYPE!]
+  }
+
   type ChatQuery {
-    chats: [Chat!]
+    chats(filter: ChatFilterInput): [Chat!]
   }
 
   type Query {

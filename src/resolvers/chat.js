@@ -8,12 +8,22 @@ const resolvers = {
   },
   ChatQuery: {
     chats: async (parent, args, context, info) => {
-      const result = await context.db
+      const filter = args.filter;
+
+      const query = context.db
         .select('*')
         .from('chat')
         .where({ is_active: true });
 
-      return result;
+      if (!_.isEmpty(filter.ids)) {
+        query.whereIn('id', filter.ids);
+      }
+
+      if (!_.isEmpty(filter.types)) {
+        query.whereIn('type', filter.types);
+      }
+
+      return await query;
     },
   },
   Chat: {
