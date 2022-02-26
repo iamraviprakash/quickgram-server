@@ -8,12 +8,18 @@ const resolvers = {
   },
   UserQuery: {
     users: async (parent, args, context, info) => {
-      const result = await context.db
+      const filter = args.filter;
+
+      const query = context.db
         .select('*')
         .from('user')
         .where({ is_active: true });
 
-      return result;
+      if (!_.isEmpty(filter.ids)) {
+        query.whereIn('id', filter.ids);
+      }
+
+      return await query;
     },
   },
   User: {

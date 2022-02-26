@@ -11,8 +11,12 @@ const typeDefs = gql`
     chats: [Chat!]
   }
 
+  input UserFilterInput {
+    ids: [ID!]
+  }
+
   type UserQuery {
-    users: [User!]
+    users(filter: UserFilterInput): [User!]
   }
 
   type Query {
