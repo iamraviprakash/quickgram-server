@@ -55,6 +55,8 @@ const resolvers = {
           fk_chat_id: args.input.chatId,
         });
 
+      console.log({ result, args });
+
       return _.first(result);
     },
     updateMessage: async (parent, args, context, info) => {
