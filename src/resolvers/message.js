@@ -8,7 +8,10 @@ const resolvers = {
   },
   MessageQuery: {
     messages: async (parent, args, context, info) => {
-      const result = await context.db.select('*').from('message');
+      const result = await context.db
+        .select('*')
+        .from('message')
+        .where({ is_active: true });
 
       return result;
     },

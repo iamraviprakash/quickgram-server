@@ -8,7 +8,10 @@ const resolvers = {
   },
   UserQuery: {
     users: async (parent, args, context, info) => {
-      const result = await context.db.select('*').from('user');
+      const result = await context.db
+        .select('*')
+        .from('user')
+        .where({ is_active: true });
 
       return result;
     },
@@ -37,7 +40,11 @@ const resolvers = {
         .select('*')
         .from('map_user_chat')
         .join('chat', { 'map_user_chat.fk_chat_id': 'chat.id' })
-        .where('map_user_chat.fk_user_id', parent.id);
+        .where({
+          'map_user_chat.fk_user_id': parent.id,
+          'chat.is_active': true,
+        });
+
       return result;
     },
   },

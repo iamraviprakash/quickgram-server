@@ -8,7 +8,10 @@ const resolvers = {
   },
   ChatQuery: {
     chats: async (parent, args, context, info) => {
-      const result = await context.db.select('*').from('chat');
+      const result = await context.db
+        .select('*')
+        .from('chat')
+        .where({ is_active: true });
 
       return result;
     },
@@ -25,14 +28,19 @@ const resolvers = {
         .select('*')
         .from('map_user_chat')
         .join('user', { 'map_user_chat.fk_user_id': 'user.id' })
-        .where('map_user_chat.fk_chat_id', parent.id);
+        .where({
+          'map_user_chat.fk_chat_id': parent.id,
+          'user.is_active': true,
+        });
+
       return result;
     },
     messages: async (parent, args, context, info) => {
       const result = await context.db
         .select('*')
         .from('message')
-        .where('fk_chat_id', parent.id);
+        .where({ fk_chat_id: parent.id, is_active: true });
+
       return result;
     },
     type: async (parent, args, context, info) => {
