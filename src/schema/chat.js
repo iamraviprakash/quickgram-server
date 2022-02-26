@@ -37,18 +37,10 @@ const typeDefs = gql`
     usersToRemove: [ID!]
   }
 
-  input CreateMessageInput {
-    chatId: ID!
-    content: String!
-    createdBy: ID!
-    contentType: CONTENT_TYPE!
-  }
-
   type ChatMutation {
     createChat(input: CreateChatInput!): Chat!
     updateChat(id: ID!, input: UpdateChatInput!): Chat!
     deleteChat(id: ID!): Chat!
-    createMessage(input: CreateMessageInput!): Message!
   }
 
   type Mutation {

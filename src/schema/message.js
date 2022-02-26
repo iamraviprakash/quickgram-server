@@ -8,6 +8,7 @@ const typeDefs = gql`
 
   type Message {
     id: ID!
+    chatId: ID!
     content: String!
     contentType: CONTENT_TYPE!
     createdBy: User!
@@ -26,7 +27,15 @@ const typeDefs = gql`
     content: String
   }
 
+  input CreateMessageInput {
+    chatId: ID!
+    content: String!
+    createdBy: ID!
+    contentType: CONTENT_TYPE!
+  }
+
   type MessageMutation {
+    createMessage(input: CreateMessageInput!): Message!
     updateMessage(id: ID!, input: UpdateMessageInput!): Message!
     deleteMessage(id: ID!): Message!
   }
