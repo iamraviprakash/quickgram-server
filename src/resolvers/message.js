@@ -45,6 +45,8 @@ const resolvers = {
   },
   MessageMutation: {
     createMessage: async (parent, args, context, info) => {
+      console.log(JSON.stringify(args));
+
       const result = await context
         .db('message')
         .returning('*')
@@ -55,7 +57,7 @@ const resolvers = {
           fk_chat_id: args.input.chatId,
         });
 
-      console.log({ result, args });
+      console.log(JSON.stringify(result));
 
       return _.first(result);
     },
