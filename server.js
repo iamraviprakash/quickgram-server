@@ -31,9 +31,9 @@ export default async function startApolloServer(typeDefs, resolvers) {
     introspection: true,
     validationRules: [
       depthLimit(MAXIMUM_QUERY_DEPTH),
-      costAnalysis({
-        maximumCost: MAXIMUM_GRAPHQL_REQUEST_COST,
-      }),
+      // costAnalysis({
+      //   maximumCost: MAXIMUM_GRAPHQL_REQUEST_COST,
+      // }),
     ],
     context: async ({ req }) => ({
       auth: 'handle authorization',
