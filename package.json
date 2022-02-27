@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "nodemon -r esm -r dotenv/config index.js",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && babel ./*.js -d dist && babel src -d dist/src",
+    "start": "npm run build && nodemon -r dotenv/config dist/index.js",
     "lint": "eslint --quiet src --ext .js,.json"
   },
   "author": "iamraviprakash",
@@ -25,6 +27,9 @@
     "pg": "^8.7.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
     "eslint": "^8.6.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.3.0",
