@@ -8,7 +8,7 @@ const resolvers = {
   },
   ChatQuery: {
     chats: async (parent, args, context, info) => {
-      const filter = args.filter;
+      const filter = args.filter || {};
 
       const query = context.db
         .select('*')
