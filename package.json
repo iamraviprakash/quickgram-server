@@ -24,12 +24,12 @@
     "graphql-tools": "^8.2.0",
     "knex": "^0.95.15",
     "nodemon": "^2.0.15",
-    "pg": "^8.7.1"
-  },
-  "devDependencies": {
+    "pg": "^8.7.1",
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.5",
-    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-env": "^7.16.11"
+  },
+  "devDependencies": {
     "eslint": "^8.6.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.3.0",
