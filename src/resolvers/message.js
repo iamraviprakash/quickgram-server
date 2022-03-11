@@ -1,4 +1,8 @@
 import _ from 'lodash';
+// import { withFilter } from 'graphql-subscriptions';
+import { PubSub } from 'graphql-subscriptions';
+
+const pubsub = new PubSub();
 
 const resolvers = {
   Query: {
@@ -79,6 +83,11 @@ const resolvers = {
         .where('id', args.id);
 
       return _.first(result);
+    },
+  },
+  Subscription: {
+    messageCreated: {
+      subscribe: () => pubsub.asyncIterator(['MESSAGE_CREATED']),
     },
   },
 };

@@ -14,8 +14,12 @@ import {
   MAXIMUM_SERVER_CONNECTIONS,
   MAXIMUM_GRAPHQL_REQUEST_COST,
 } from './constants';
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
 
-export default async function startApolloServer(typeDefs, resolvers) {
+import { PubSub } from 'graphql-subscriptions';
+
+export default async function startServer({ schema }) {
   // Integrating with Express app
   const app = new express();
   const httpServer = http.createServer(app);
@@ -24,10 +28,18 @@ export default async function startApolloServer(typeDefs, resolvers) {
   httpServer.timeout = SERVER_TIMEOUT;
   httpServer.maxConnections = MAXIMUM_SERVER_CONNECTIONS;
 
+  // Create web socket server
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: '/graphql',
+  });
+
+  // Save the returned server's info so we can shutdown this server later
+  const wsServerInstance = useServer({ schema }, wsServer);
+
   // Apollo Server initialization
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
     introspection: true,
     validationRules: [
       depthLimit(MAXIMUM_QUERY_DEPTH),
@@ -38,6 +50,7 @@ export default async function startApolloServer(typeDefs, resolvers) {
     context: async ({ req }) => ({
       auth: 'handle authorization',
       db: dataSourceClient,
+      pubsub: new PubSub(),
     }),
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
@@ -55,12 +68,21 @@ export default async function startApolloServer(typeDefs, resolvers) {
           'request.credentials': 'omit',
         },
       }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await wsServerInstance.dispose();
+            },
+          };
+        },
+      },
     ],
   });
 
   await server.start();
 
-  server.applyMiddleware({ app, path: '/graphql' });
+  server.applyMiddleware({ app });
 
   await new Promise((resolve) =>
     httpServer.listen({ port: process.env.PORT || 8056 }, resolve),
@@ -68,6 +90,11 @@ export default async function startApolloServer(typeDefs, resolvers) {
 
   console.log(
     `🚀 Server ready at http://localhost:${
+      process.env.SERVER_PORT || 8056
+    }${server.graphqlPath}`,
+  );
+  console.log(
+    `🚀 Server ready at ws://localhost:${
       process.env.SERVER_PORT || 8056
     }${server.graphqlPath}`,
   );
