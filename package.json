@@ -11,7 +11,11 @@
   "author": "iamraviprakash",
   "license": "ISC",
   "dependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
     "@graphql-tools/load-files": "^6.5.3",
+    "@graphql-tools/schema": "^8.3.8",
     "apollo-server-core": "^3.6.1",
     "apollo-server-express": "^3.6.1",
     "datasource-sql": "^1.6.0",
@@ -21,13 +25,12 @@
     "graphql": "^16.2.0",
     "graphql-cost-analysis": "^1.0.3",
     "graphql-depth-limit": "^1.1.0",
+    "graphql-subscriptions": "^2.0.0",
     "graphql-tools": "^8.2.0",
     "knex": "^0.95.15",
     "nodemon": "^2.0.15",
     "pg": "^8.7.1",
-    "@babel/cli": "^7.17.6",
-    "@babel/core": "^7.17.5",
-    "@babel/preset-env": "^7.16.11"
+    "subscriptions-transport-ws": "^0.11.0"
   },
   "devDependencies": {
     "eslint": "^8.6.0",
@@ -35,5 +38,10 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-node": "^11.1.0",
     "prettier": "2.5.1"
+  },
+  "nodemonConfig": {
+    "events": {
+      "restart": "echo \"Restarting server...\""
+    }
   }
 }

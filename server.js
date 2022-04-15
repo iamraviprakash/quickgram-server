@@ -6,6 +6,7 @@ import {
 import express from 'express';
 import http from 'http';
 import dataSourceClient from './model';
+import pubsubClient from './pubsub';
 import depthLimit from 'graphql-depth-limit';
 import costAnalysis from 'graphql-cost-analysis';
 import {
@@ -14,8 +15,10 @@ import {
   MAXIMUM_SERVER_CONNECTIONS,
   MAXIMUM_GRAPHQL_REQUEST_COST,
 } from './constants';
+import { execute, subscribe } from 'graphql';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
 
-export default async function startApolloServer(typeDefs, resolvers) {
+export default async function startApolloServer(schema) {
   // Integrating with Express app
   const app = new express();
   const httpServer = http.createServer(app);
@@ -24,10 +27,26 @@ export default async function startApolloServer(typeDefs, resolvers) {
   httpServer.timeout = SERVER_TIMEOUT;
   httpServer.maxConnections = MAXIMUM_SERVER_CONNECTIONS;
 
+  // Subscription server initialization
+  const subscriptionServer = SubscriptionServer.create(
+    {
+      schema,
+      execute,
+      subscribe,
+      onConnect(connectionParams, webSocket, context) {
+        console.log('Subscription Server Connected');
+        return { pubsub: pubsubClient };
+      },
+      onDisconnect(webSocket, context) {
+        console.log('Subscription Server Disconnected');
+      },
+    },
+    { server: httpServer },
+  );
+
   // Apollo Server initialization
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
     introspection: true,
     validationRules: [
       depthLimit(MAXIMUM_QUERY_DEPTH),
@@ -38,9 +57,21 @@ export default async function startApolloServer(typeDefs, resolvers) {
     context: async ({ req }) => ({
       auth: 'handle authorization',
       db: dataSourceClient,
+      pubsub: pubsubClient,
     }),
     plugins: [
+      // Proper shutdown for the HTTP server.
       ApolloServerPluginDrainHttpServer({ httpServer }),
+      // Proper shutdown for the WebSocket server.
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await subscriptionServer.close();
+            },
+          };
+        },
+      },
       ApolloServerPluginLandingPageGraphQLPlayground({
         settings: {
           'some.setting': true,
@@ -67,7 +98,12 @@ export default async function startApolloServer(typeDefs, resolvers) {
   );
 
   console.log(
-    `🚀 Server ready at http://localhost:${
+    `🚀 Query endpoint ready at http://localhost:${
+      process.env.SERVER_PORT || 8056
+    }${server.graphqlPath}`,
+  );
+  console.log(
+    `🚀 Subscription endpoint ready at ws://localhost:${
       process.env.SERVER_PORT || 8056
     }${server.graphqlPath}`,
   );
