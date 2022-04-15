@@ -4,8 +4,9 @@
   "description": "",
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "npm run clean && babel ./*.js -d dist && babel src -d dist/src",
-    "start": "npm run build && nodemon -r dotenv/config dist/index.js",
+    "build:js": "npm run clean && babel src -d dist/src",
+    "start:app": "node dist/src/index.js",
+    "start": "nodemon -e js --watch src --exec \"npm run build:js && npm run start:app\"",
     "lint": "eslint --quiet src --ext .js,.json"
   },
   "author": "iamraviprakash",

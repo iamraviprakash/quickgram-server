@@ -3,49 +3,18 @@ import {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageGraphQLPlayground,
 } from 'apollo-server-core';
-import express from 'express';
-import http from 'http';
 import dataSourceClient from './model';
 import pubsubClient from './pubsub';
 import depthLimit from 'graphql-depth-limit';
-import costAnalysis from 'graphql-cost-analysis';
-import {
-  SERVER_TIMEOUT,
-  MAXIMUM_QUERY_DEPTH,
-  MAXIMUM_SERVER_CONNECTIONS,
-  MAXIMUM_GRAPHQL_REQUEST_COST,
-} from './constants';
-import { execute, subscribe } from 'graphql';
-import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { MAXIMUM_QUERY_DEPTH } from '../constants';
 
-export default async function startApolloServer(schema) {
-  // Integrating with Express app
-  const app = new express();
-  const httpServer = http.createServer(app);
-
-  // HTTP server configuration
-  httpServer.timeout = SERVER_TIMEOUT;
-  httpServer.maxConnections = MAXIMUM_SERVER_CONNECTIONS;
-
-  // Subscription server initialization
-  const subscriptionServer = SubscriptionServer.create(
-    {
-      schema,
-      execute,
-      subscribe,
-      onConnect(connectionParams, webSocket, context) {
-        console.log('Subscription Server Connected');
-        return { pubsub: pubsubClient };
-      },
-      onDisconnect(webSocket, context) {
-        console.log('Subscription Server Disconnected');
-      },
-    },
-    { server: httpServer },
-  );
-
+export default async function createQueryServer({
+  schema,
+  httpServer,
+  subscriptionServer,
+}) {
   // Apollo Server initialization
-  const server = new ApolloServer({
+  const queryServer = new ApolloServer({
     schema,
     introspection: true,
     validationRules: [
@@ -89,22 +58,5 @@ export default async function startApolloServer(schema) {
     ],
   });
 
-  await server.start();
-
-  server.applyMiddleware({ app, path: '/graphql' });
-
-  await new Promise((resolve) =>
-    httpServer.listen({ port: process.env.PORT || 8056 }, resolve),
-  );
-
-  console.log(
-    `🚀 Query endpoint ready at http://localhost:${
-      process.env.SERVER_PORT || 8056
-    }${server.graphqlPath}`,
-  );
-  console.log(
-    `🚀 Subscription endpoint ready at ws://localhost:${
-      process.env.SERVER_PORT || 8056
-    }${server.graphqlPath}`,
-  );
+  return queryServer;
 }
