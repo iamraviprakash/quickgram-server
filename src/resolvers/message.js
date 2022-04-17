@@ -58,6 +58,16 @@ const resolvers = {
           fk_chat_id: args.input.chatId,
         });
 
+      context.pubsub.publish('NEW_MESSAGE', {
+        newMessage: {
+          id: _.first(result).id,
+          content: args.input.content,
+          content_type: args.input.contentType,
+          created_by: args.input.createdBy,
+          fk_chat_id: args.input.chatId,
+        },
+      });
+
       return _.first(result);
     },
     updateMessage: async (parent, args, context, info) => {
@@ -79,6 +89,12 @@ const resolvers = {
         .where('id', args.id);
 
       return _.first(result);
+    },
+  },
+  Subscription: {
+    newMessage: {
+      subscribe: (parent, args, context, info) =>
+        context.pubsub.asyncIterator(['NEW_MESSAGE']),
     },
   },
 };

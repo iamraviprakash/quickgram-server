@@ -43,6 +43,10 @@ const typeDefs = gql`
   type Mutation {
     messageMutation: MessageMutation!
   }
+
+  type Subscription {
+    newMessage: Message!
+  }
 `;
 
 export default typeDefs;
