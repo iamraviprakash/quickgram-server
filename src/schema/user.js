@@ -5,8 +5,6 @@ const typeDefs = gql`
     id: ID!
     firstName: String!
     lastName: String
-    emailId: String!
-    mobileNumber: String!
     createdAt: String!
     chats: [Chat!]
   }
@@ -26,17 +24,11 @@ const typeDefs = gql`
   input CreateUserInput {
     firstName: String!
     lastName: String
-    emailId: String!
-    password: String!
-    mobileNumber: String!
   }
 
   input UpdateUserInput {
     firstName: String
     lastName: String
-    emailId: String
-    mobileNumber: String
-    password: String
   }
 
   type UserMutation {

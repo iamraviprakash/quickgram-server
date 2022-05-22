@@ -32,12 +32,6 @@ const resolvers = {
     lastName: async (parent, args, context, info) => {
       return parent.last_name;
     },
-    emailId: async (parent, args, context, info) => {
-      return parent.email_id;
-    },
-    mobileNumber: async (parent, args, context, info) => {
-      return parent.mobile_number;
-    },
     createdAt: async (parent, args, context, info) => {
       return parent.created_at;
     },
@@ -62,11 +56,8 @@ const resolvers = {
   UserMutation: {
     createUser: async (parent, args, context, info) => {
       const result = await context.db('user').returning('*').insert({
-        first_name: args.firstName,
-        last_name: args.lastName,
-        email_id: args.emailId,
-        password: args.password,
-        mobile_number: args.mobileNumber,
+        first_name: args.input.firstName,
+        last_name: args.input.lastName,
       });
 
       return _.first(result);
@@ -76,11 +67,8 @@ const resolvers = {
         .db('user')
         .returning('*')
         .update({
-          first_name: args.firstName,
-          last_name: args.lastName,
-          email_id: args.emailId,
-          password: args.password,
-          mobile_number: args.mobileNumber,
+          first_name: args.input.firstName,
+          last_name: args.input.lastName,
         })
         .where('id', args.id);
 
