@@ -4,6 +4,7 @@ const typeDefs = gql`
   enum CONTENT_TYPE {
     LINK
     TEXT
+    MEDIA
   }
 
   type Message {
