@@ -1,24 +1,18 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
-  enum CHAT_TYPE {
-    DM
-    GROUP
-  }
-
   type Chat {
     id: ID!
     name: String!
     users: [User]!
     messages: [Message!]
-    type: CHAT_TYPE!
+    code: String!
     createdBy: User!
     createdAt: String!
   }
 
   input ChatFilterInput {
     ids: [ID!]
-    types: [CHAT_TYPE!]
   }
 
   type ChatQuery {
@@ -31,7 +25,6 @@ const typeDefs = gql`
 
   input CreateChatInput {
     name: String!
-    type: CHAT_TYPE!
     users: [ID]!
     createdBy: ID!
   }

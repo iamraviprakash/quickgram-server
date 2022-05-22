@@ -31,7 +31,8 @@
     "knex": "^0.95.15",
     "nodemon": "^2.0.15",
     "pg": "^8.7.1",
-    "subscriptions-transport-ws": "^0.11.0"
+    "subscriptions-transport-ws": "^0.11.0",
+    "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
     "eslint": "^8.6.0",

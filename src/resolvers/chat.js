@@ -1,4 +1,6 @@
 import _ from 'lodash';
+import { generateRoomCode } from '../utils';
+import { ROOM_CODE_SIZE } from '../constants';
 
 const resolvers = {
   Query: {
@@ -53,8 +55,8 @@ const resolvers = {
 
       return result;
     },
-    type: async (parent, args, context, info) => {
-      return parent.type;
+    code: async (parent, args, context, info) => {
+      return parent.code;
     },
     createdBy: async (parent, args, context, info) => {
       const result = await context.db
@@ -75,32 +77,27 @@ const resolvers = {
   },
   ChatMutation: {
     createChat: async (parent, args, context, info) => {
+      const roomCode = generateRoomCode({ size: ROOM_CODE_SIZE });
+
       const result = await context.db('chat').returning('*').insert({
         name: args.input.name,
-        type: args.input.type,
         created_by: args.input.createdBy,
+        code: roomCode,
       });
 
       const chat = _.first(result);
 
-      if (chat.type == 'GROUP') {
-        const addingUsersPromises = _.map(
-          args.input.users,
-          async (userId) => {
-            return await context.db('map_user_chat').insert({
-              fk_chat_id: chat.id,
-              fk_user_id: userId,
-            });
-          },
-        );
+      const addingUsersPromises = _.map(
+        args.input.users,
+        async (userId) => {
+          return await context.db('map_user_chat').insert({
+            fk_chat_id: chat.id,
+            fk_user_id: userId,
+          });
+        },
+      );
 
-        await Promise.all(addingUsersPromises);
-      } else {
-        await context.db('map_user_chat').insert({
-          fk_chat_id: chat.id,
-          fk_user_id: _.first(args.input.users),
-        });
-      }
+      await Promise.all(addingUsersPromises);
 
       return chat;
     },
@@ -124,57 +121,55 @@ const resolvers = {
 
       const chat = _.first(result);
 
-      if (chat.type == 'GROUP') {
-        const addingUsersPromises = _.map(
-          args.input.usersToAdd,
-          async (userId) => {
-            const mappings = await context
-              .db('map_user_chat')
-              .select('*')
-              .where({
-                fk_chat_id: chat.id,
-                fk_user_id: userId,
-              });
+      const addingUsersPromises = _.map(
+        args.input.usersToAdd,
+        async (userId) => {
+          const mappings = await context
+            .db('map_user_chat')
+            .select('*')
+            .where({
+              fk_chat_id: chat.id,
+              fk_user_id: userId,
+            });
 
-            if (!_.isEmpty(mappings)) {
-              await context
-                .db('map_user_chat')
-                .update({
-                  is_active: true,
-                })
-                .where({
-                  fk_chat_id: chat.id,
-                  fk_user_id: userId,
-                });
-            } else {
-              await context.db('map_user_chat').insert({
-                fk_chat_id: chat.id,
-                fk_user_id: userId,
-              });
-            }
-          },
-        );
-
-        const removingUsersPromises = _.map(
-          args.input.usersToRemove,
-          async (userId) => {
+          if (!_.isEmpty(mappings)) {
             await context
               .db('map_user_chat')
               .update({
-                is_active: false,
+                is_active: true,
               })
               .where({
                 fk_chat_id: chat.id,
                 fk_user_id: userId,
               });
-          },
-        );
+          } else {
+            await context.db('map_user_chat').insert({
+              fk_chat_id: chat.id,
+              fk_user_id: userId,
+            });
+          }
+        },
+      );
 
-        await Promise.all([
-          ...addingUsersPromises,
-          ...removingUsersPromises,
-        ]);
-      }
+      const removingUsersPromises = _.map(
+        args.input.usersToRemove,
+        async (userId) => {
+          await context
+            .db('map_user_chat')
+            .update({
+              is_active: false,
+            })
+            .where({
+              fk_chat_id: chat.id,
+              fk_user_id: userId,
+            });
+        },
+      );
+
+      await Promise.all([
+        ...addingUsersPromises,
+        ...removingUsersPromises,
+      ]);
 
       return chat;
     },
