@@ -13,6 +13,7 @@ const typeDefs = gql`
 
   input ChatFilterInput {
     ids: [ID!]
+    codes: [String!]
   }
 
   type ChatQuery {

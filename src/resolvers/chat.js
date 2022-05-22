@@ -21,8 +21,8 @@ const resolvers = {
         query.whereIn('id', filter.ids);
       }
 
-      if (!_.isEmpty(filter.types)) {
-        query.whereIn('type', filter.types);
+      if (!_.isEmpty(filter.codes)) {
+        query.whereIn('code', filter.codes);
       }
 
       return await query;
