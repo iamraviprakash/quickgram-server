@@ -38,7 +38,7 @@ const typeDefs = gql`
 
   type ChatMutation {
     createChat(input: CreateChatInput!): Chat!
-    updateChat(id: ID!, input: UpdateChatInput!): Chat!
+    updateChat(id: ID, code: String, input: UpdateChatInput!): Chat!
     deleteChat(id: ID!): Chat!
   }
 

@@ -102,23 +102,23 @@ const resolvers = {
       return chat;
     },
     updateChat: async (parent, args, context, info) => {
-      let result = [];
+      let query = null;
 
       if (!_.isEmpty(args.input.name)) {
-        result = await context
-          .db('chat')
-          .returning('*')
-          .update({
-            name: args.input.name,
-          })
-          .where('id', args.id);
+        query = context.db('chat').returning('*').update({
+          name: args.input.name,
+        });
       } else {
-        result = await context
-          .db('chat')
-          .select('*')
-          .where('id', args.id);
+        query = context.db('chat').select('*');
       }
 
+      if (args.id) {
+        query = query.where('id', args.id);
+      } else {
+        query = query.where('code', args.code);
+      }
+
+      const result = await query;
       const chat = _.first(result);
 
       const addingUsersPromises = _.map(
