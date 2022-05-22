@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build:js": "npm run clean && babel src -d dist/src",
-    "start:app": "node dist/src/index.js",
+    "start:app": "node -r dotenv/config dist/src/index.js",
     "start": "nodemon -e js --watch src --exec \"npm run build:js && npm run start:app\"",
     "lint": "eslint --quiet src --ext .js,.json"
   },
