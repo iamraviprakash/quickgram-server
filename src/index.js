@@ -44,12 +44,12 @@ httpServer.maxConnections = MAXIMUM_SERVER_CONNECTIONS;
 
   console.log(
     `🚀 Query endpoint ready at http://localhost:${
-      process.env.SERVER_PORT || 8056
+      process.env.PORT || 8056
     }${queryServer.graphqlPath}`,
   );
   console.log(
     `🚀 Subscription endpoint ready at ws://localhost:${
-      process.env.SERVER_PORT || 8056
+      process.env.PORT || 8056
     }${queryServer.graphqlPath}`,
   );
 })();
