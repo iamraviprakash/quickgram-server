@@ -60,11 +60,7 @@ const resolvers = {
 
       context.pubsub.publish('NEW_MESSAGE', {
         newMessage: {
-          id: _.first(result).id,
-          content: args.input.content,
-          content_type: args.input.contentType,
-          created_by: args.input.createdBy,
-          fk_chat_id: args.input.chatId,
+          ..._.first(result),
         },
       });
 
