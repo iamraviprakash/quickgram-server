@@ -1,6 +1,7 @@
-# glitchgram-server
+# quickgram-server
 
-[![CodeFactor](https://www.codefactor.io/repository/github/iamraviprakash/glitchgram-server/badge)](https://www.codefactor.io/repository/github/iamraviprakash/glitchgram-server)
+[![CodeFactor](https://www.codefactor.io/repository/github/iamraviprakash/quickgram-server/badge)](https://www.codefactor.io/repository/github/iamraviprakash/quickgram-server)
 
 ## Introduction
-A glitchy version of Telegram. ;)
+
+Server code for a quick messaging app. ;)

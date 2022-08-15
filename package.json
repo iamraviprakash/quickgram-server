@@ -1,7 +1,7 @@
 {
-  "name": "glitchgram-server",
+  "name": "quickgram-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "A quick messaging app server",
   "scripts": {
     "clean": "rm -rf dist",
     "build:js": "npm run clean && babel src -d dist/src",
