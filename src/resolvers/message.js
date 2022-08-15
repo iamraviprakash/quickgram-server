@@ -11,7 +11,8 @@ const resolvers = {
       const result = await context.db
         .select('*')
         .from('message')
-        .where({ is_active: true });
+        .where({ is_active: true })
+        .orderBy('created_at', 'asc');
 
       return result;
     },
