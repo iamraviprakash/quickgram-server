@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { generateRoomCode } from '../utils';
 import { ROOM_CODE_SIZE } from '../constants';
+import { withFilter } from 'graphql-subscriptions';
 
 const resolvers = {
   Query: {
@@ -118,8 +119,8 @@ const resolvers = {
         query = query.where('code', args.code);
       }
 
-      const result = await query;
-      const chat = _.first(result);
+      const chatResult = await query;
+      const chat = _.first(chatResult);
 
       const addingUsersPromises = _.map(
         args.input.usersToAdd,
@@ -130,6 +131,13 @@ const resolvers = {
             .where({
               fk_chat_id: chat.id,
               fk_user_id: userId,
+            });
+
+          const userResult = await context
+            .db('user')
+            .select('*')
+            .where({
+              id: userId,
             });
 
           if (!_.isEmpty(mappings)) {
@@ -148,6 +156,13 @@ const resolvers = {
               fk_user_id: userId,
             });
           }
+
+          context.pubsub.publish('USER_ADDED', {
+            userAdded: {
+              ..._.first(userResult),
+              fk_chat_id: chat.id,
+            },
+          });
         },
       );
 
@@ -181,6 +196,17 @@ const resolvers = {
         .where('id', args.id);
 
       return _.first(result);
+    },
+  },
+  Subscription: {
+    userAdded: {
+      subscribe: withFilter(
+        (parent, args, context, info) =>
+          context.pubsub.asyncIterator(['USER_ADDED']),
+        (payload, variables) => {
+          return payload.userAdded.fk_chat_id === variables.chatId;
+        },
+      ),
     },
   },
 };

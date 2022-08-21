@@ -45,6 +45,10 @@ const typeDefs = gql`
   type Mutation {
     chatMutation: ChatMutation!
   }
+
+  type Subscription {
+    userAdded(chatId: ID!): User!
+  }
 `;
 
 export default typeDefs;
