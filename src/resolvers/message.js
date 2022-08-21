@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { withFilter } from 'graphql-subscriptions';
 
 const resolvers = {
   Query: {
@@ -90,8 +91,13 @@ const resolvers = {
   },
   Subscription: {
     newMessage: {
-      subscribe: (parent, args, context, info) =>
-        context.pubsub.asyncIterator(['NEW_MESSAGE']),
+      subscribe: withFilter(
+        (parent, args, context, info) =>
+          context.pubsub.asyncIterator(['NEW_MESSAGE']),
+        (payload, variables) => {
+          return payload.newMessage.fk_chat_id === variables.chatId;
+        },
+      ),
     },
   },
 };
