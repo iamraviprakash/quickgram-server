@@ -60,8 +60,8 @@ const resolvers = {
           fk_chat_id: args.input.chatId,
         });
 
-      context.pubsub.publish('NEW_MESSAGE', {
-        newMessage: {
+      context.pubsub.publish('MESSAGE_ADDED', {
+        messageAdded: {
           ..._.first(result),
         },
       });
@@ -90,12 +90,12 @@ const resolvers = {
     },
   },
   Subscription: {
-    newMessage: {
+    messageAdded: {
       subscribe: withFilter(
         (parent, args, context, info) =>
-          context.pubsub.asyncIterator(['NEW_MESSAGE']),
+          context.pubsub.asyncIterator(['MESSAGE_ADDED']),
         (payload, variables) => {
-          return payload.newMessage.fk_chat_id === variables.chatId;
+          return payload.messageAdded.fk_chat_id === variables.chatId;
         },
       ),
     },
