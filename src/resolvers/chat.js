@@ -44,7 +44,8 @@ const resolvers = {
         .where({
           'map_user_chat.fk_chat_id': parent.id,
           'user.is_active': true,
-        });
+        })
+        .orderBy('map_user_chat.created_at', 'desc');
 
       return result;
     },
