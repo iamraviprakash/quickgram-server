@@ -37,17 +37,9 @@ const resolvers = {
       return parent.name;
     },
     users: async (parent, args, context, info) => {
-      const result = await context.db
-        .select('*')
-        .from('map_user_chat')
-        .join('user', { 'map_user_chat.fk_user_id': 'user.id' })
-        .where({
-          'map_user_chat.fk_chat_id': parent.id,
-          'user.is_active': true,
-        })
-        .orderBy('map_user_chat.created_at', 'desc');
-
-      return result;
+      return await context.loaders.user.getUsersByChatIds.load(
+        parent.id,
+      );
     },
     messages: async (parent, args, context, info) => {
       const result = await context.db
