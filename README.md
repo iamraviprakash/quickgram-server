@@ -33,7 +33,7 @@ Web: [Source Code Link](https://github.com/iamraviprakash/quickgram-web)
 
 
 ### Backend Infrastructure Requirements
-- [ ] Implement DataLoader
+- [x] Implement DataLoader
 - [ ] Implement error handling
 - [ ] Implement query cost analysis
 - [ ] Implement Graphql security measures. 
