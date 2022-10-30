@@ -5,6 +5,7 @@ import {
 } from 'apollo-server-core';
 import dataSourceClient from './model';
 import pubsubClient from './pubsub';
+import loaders from '../loaders';
 import depthLimit from 'graphql-depth-limit';
 import { MAXIMUM_QUERY_DEPTH } from '../constants';
 
@@ -27,6 +28,7 @@ export default async function createQueryServer({
       auth: 'handle authorization',
       db: dataSourceClient,
       pubsub: pubsubClient,
+      loaders: loaders({ db: dataSourceClient }),
     }),
     plugins: [
       // Proper shutdown for the HTTP server.
