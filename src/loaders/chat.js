@@ -1,11 +1,9 @@
 import DataLoader from 'dataloader';
 import _ from 'lodash';
-import model from '../model';
 
 const batchGetChatsByUserIds = async ({ context, ids }) => {
-  return model.getters.chat
+  return context.model.getters.chat
     .getChatsByUserIds({
-      context,
       ids,
     })
     .then((rows) => {

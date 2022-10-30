@@ -9,8 +9,9 @@ const getChatsByUserIds = async ({ context, ids }) => {
     .whereIn('map_user_chat.fk_user_id', ids);
 };
 
-export default {
+export default (context) => ({
   chat: {
-    getChatsByUserIds,
+    getChatsByUserIds: ({ ids }) =>
+      getChatsByUserIds({ context, ids }),
   },
-};
+});

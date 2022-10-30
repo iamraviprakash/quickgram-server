@@ -6,6 +6,7 @@ import {
 import dataSourceClient from './dataSource';
 import pubsubClient from './pubsub';
 import loaders from '../loaders';
+import model from '../model';
 import depthLimit from 'graphql-depth-limit';
 import { MAXIMUM_QUERY_DEPTH } from '../constants';
 
@@ -24,12 +25,21 @@ export default async function createQueryServer({
       //   maximumCost: MAXIMUM_GRAPHQL_REQUEST_COST,
       // }),
     ],
-    context: async ({ req }) => ({
-      auth: 'handle authorization',
-      db: dataSourceClient,
-      pubsub: pubsubClient,
-      loaders: loaders({ db: dataSourceClient }),
-    }),
+    context: async ({ req }) => {
+      const modelContext = model({ db: dataSourceClient });
+      const loadersContext = loaders({
+        db: dataSourceClient,
+        model: modelContext,
+      });
+
+      return {
+        auth: 'handle authorization',
+        db: dataSourceClient,
+        pubsub: pubsubClient,
+        model: modelContext,
+        loaders: loadersContext,
+      };
+    },
     plugins: [
       // Proper shutdown for the HTTP server.
       ApolloServerPluginDrainHttpServer({ httpServer }),

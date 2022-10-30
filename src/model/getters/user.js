@@ -10,8 +10,9 @@ const getUsersByChatIds = async ({ context, ids }) => {
     .orderBy('map_user_chat.created_at', 'desc');
 };
 
-export default {
+export default (context) => ({
   user: {
-    getUsersByChatIds,
+    getUsersByChatIds: ({ ids }) =>
+      getUsersByChatIds({ context, ids }),
   },
-};
+});
