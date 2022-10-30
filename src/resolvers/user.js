@@ -36,16 +36,9 @@ const resolvers = {
       return parent.created_at;
     },
     chats: async (parent, args, context, info) => {
-      const result = await context.db
-        .select('*')
-        .from('map_user_chat')
-        .join('chat', { 'map_user_chat.fk_chat_id': 'chat.id' })
-        .where({
-          'map_user_chat.fk_user_id': parent.id,
-          'chat.is_active': true,
-        });
-
-      return result;
+      return await context.loaders.chat.getChatsByUserIds.load(
+        parent.id,
+      );
     },
   },
   Mutation: {
