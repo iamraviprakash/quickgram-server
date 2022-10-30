@@ -3,7 +3,7 @@ import {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageGraphQLPlayground,
 } from 'apollo-server-core';
-import dataSourceClient from './model';
+import dataSourceClient from './dataSource';
 import pubsubClient from './pubsub';
 import loaders from '../loaders';
 import depthLimit from 'graphql-depth-limit';
