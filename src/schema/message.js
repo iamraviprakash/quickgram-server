@@ -9,7 +9,6 @@ const typeDefs = gql`
 
   type Message {
     id: ID!
-    chatId: ID!
     content: String!
     contentType: CONTENT_TYPE!
     createdBy: User!

@@ -22,9 +22,6 @@ const resolvers = {
     id: async (parent, args, context, info) => {
       return parent.id;
     },
-    chatId: async (parent, args, context, info) => {
-      return parent.fk_chat_id;
-    },
     content: async (parent, args, context, info) => {
       return parent.content;
     },
