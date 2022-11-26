@@ -4,9 +4,9 @@
   "description": "A quick messaging app server",
   "scripts": {
     "clean": "rm -rf dist",
-    "build:js": " npm i && npm run clean && babel src -d dist/src",
-    "start:app": "node -r dotenv/config dist/src/index.js",
-    "start": "nodemon -e js --watch src --exec \"npm run build:js && npm run start:app\"",
+    "build": " npm i && npm run clean && babel src -d dist/src",
+    "start:build": "node -r dotenv/config dist/src/index.js",
+    "start": "nodemon -e js --watch src --exec \"npm run build && npm run start:build\"",
     "lint": "eslint --quiet src --ext .js,.json"
   },
   "author": "iamraviprakash",
