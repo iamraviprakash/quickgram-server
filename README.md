@@ -34,6 +34,7 @@ Web: [Source Code Link](https://github.com/iamraviprakash/quickgram-web)
 
 ### Backend Infrastructure Requirements
 - [x] Implement DataLoader
+- [ ] Move to render from heroku
 - [ ] Implement error handling
 - [ ] Implement query cost analysis
 - [ ] Implement Graphql security measures. 
